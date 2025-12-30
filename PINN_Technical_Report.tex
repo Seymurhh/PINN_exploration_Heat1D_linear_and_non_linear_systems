@@ -339,22 +339,78 @@ The PINN successfully captures:
 \end{itemize}
 
 %==============================================================================
-\section{Comparison: Linear vs. Non-Linear}
+\section{Case Study 3: Structural Mechanics — Beam Deflection}
+%==============================================================================
+
+\subsection{Problem Formulation}
+
+The Euler-Bernoulli beam equation is a 4th-order ODE describing the deflection of a beam under load:
+
+\begin{equation}
+EI \frac{d^4 w}{dx^4} = q(x)
+\end{equation}
+
+where:
+\begin{itemize}
+    \item $w(x)$: Beam deflection
+    \item $E$: Young's modulus (200 GPa for steel)
+    \item $I$: Moment of inertia of the cross-section
+    \item $q(x)$: Distributed load (10 kN/m uniform load)
+\end{itemize}
+
+\textbf{Boundary Conditions (Simply-Supported):}
+\begin{align}
+w(0) = w(L) &= 0 \\ \quad \text{(no deflection at supports)} \\
+w''(0) = w''(L) &= 0 \\ \quad \text{(no bending moment at supports)}
+\end{align}
+
+\subsection{Analytical Solution}
+
+For a simply-supported beam with uniform load $q_0$:
+
+\begin{equation}
+w(x) = \frac{q_0 x}{24 EI} \left( L^3 - 2Lx^2 + x^3 \right)
+\end{equation}
+
+Maximum deflection occurs at the center ($x = L/2$).
+
+\subsection{Why This Problem is Significant}
+
+\begin{enumerate}
+    \item \textbf{Higher-Order Derivatives}: Requires computing $d^4w/dx^4$ via automatic differentiation.
+    \item \textbf{Multiple BCs}: Both displacement ($w$) and curvature ($w''$) conditions must be enforced.
+    \item \textbf{Engineering Relevance}: Beam analysis is fundamental to structural engineering.
+\end{enumerate}
+
+\subsection{Results}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{results/PINN_Beam_Results.png}
+\caption{PINN solution for Euler-Bernoulli beam deflection. Top row: Deflection curve comparison, prediction error, and training loss. Middle row: Problem schematic, bending moment diagram, and shear force diagram. Bottom row: Physical deflection scale, point-wise comparison, and summary statistics.}
+\label{fig:beam_results}
+\end{figure}
+
+The PINN achieves near-perfect accuracy for this 4th-order problem, demonstrating effective computation of higher-order derivatives through automatic differentiation.
+
+%==============================================================================
+\section{Comparison of All Case Studies}
 %==============================================================================
 
 \begin{table}[H]
 \centering
-\caption{Comparison of Linear and Non-Linear Cases}
-\begin{tabular}{lcc}
+\caption{Comparison of All Three Case Studies}
+\begin{tabular}{lccc}
 \toprule
-\textbf{Aspect} & \textbf{Heat Equation (Linear)} & \textbf{Burgers Equation (Non-Linear)} \\
+\textbf{Aspect} & \textbf{Heat Equation} & \textbf{Burgers Equation} & \textbf{Beam Deflection} \\
 \midrule
-PDE Type & Linear, parabolic & Non-linear, hyperbolic-parabolic \\
-Analytical Solution & Closed-form available & Semi-analytical (Cole-Hopf) \\
-Training Difficulty & Easy & Moderate \\
-Epochs Required & 5,000 & 10,000+ \\
-Key Challenge & None & Shock capture \\
-Accuracy & 99.8\% & 95-98\% \\
+Equation Order & 2nd (PDE) & 2nd (PDE) & 4th (ODE) \\
+Type & Linear & Non-linear & Linear \\
+Analytical Solution & Closed-form & Cole-Hopf & Closed-form \\
+Training Difficulty & Easy & Moderate & Moderate \\
+Epochs Required & 5,000 & 10,000 & 10,000 \\
+Key Challenge & None & Shock capture & Higher derivatives \\
+Accuracy & 99.8\% & 95-98\% & $\sim$100\% \\
 \bottomrule
 \end{tabular}
 \end{table}
