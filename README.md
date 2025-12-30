@@ -62,7 +62,7 @@ PINN_exploration/
 └── requirements.txt             # Python dependencies
 ```
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Installation
 
@@ -117,7 +117,7 @@ A comprehensive 12-page technical report is included with:
 
 📄 **[View Technical Report (PDF)](PINN_Technical_Report.pdf)**
 
-## 🔮 Future Directions
+## Future Directions
 
 - [ ] Implement Vec2Vec for domain-agnostic generalization
 - [ ] Extend to 2D/3D mechanical systems (stress analysis)
@@ -131,11 +131,6 @@ A comprehensive 12-page technical report is included with:
 2. Lu, L., et al. (2021). *DeepXDE: A deep learning library for solving differential equations.* SIAM Review, 63(1), 208-228.
 
 3. Wang, S., et al. (2021). *Understanding and mitigating gradient pathologies in physics-informed neural networks.* SIAM Journal on Scientific Computing, 43(5), A3055-A3081.
-
-## 👤 Author
-
-**Seymur Hasanov**  
-🔗 [LinkedIn](https://linkedin.com/in/seymurh) | [GitHub](https://github.com/Seymurhh)
 
 ## 📄 License
 
