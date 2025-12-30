@@ -391,19 +391,6 @@ PINNs can discover unknown parameters. For example, given temperature measuremen
 
 where $k$ is treated as a trainable parameter.
 
-\subsection{Domain-Agnostic PINNs (Kaylee Vo's Proposal)}
-
-The challenge: A PINN trained on Domain A cannot directly solve on Domain B without retraining.
-
-\textbf{Vec2Vec Solution:}
-\begin{enumerate}
-    \item Train PINN on Domain A
-    \item Extract learned embeddings from the network
-    \item Use Vec2Vec (a GAN) to translate embeddings to Domain B
-    \item Solve on Domain B without full retraining
-\end{enumerate}
-
-This is an active research frontier.
 
 %==============================================================================
 \section{Limitations and Challenges}
@@ -441,7 +428,7 @@ This report demonstrated that Physics-Informed Neural Networks can:
 
 \textbf{Future Work:}
 \begin{itemize}
-    \item Implement Vec2Vec for domain-agnostic generalization
+    \item Extend to structural mechanics (beam deflection, elasticity)
     \item Extend to 2D/3D mechanical systems (stress analysis)
     \item Apply to inverse problems (parameter discovery from sensor data)
 \end{itemize}
@@ -459,7 +446,6 @@ This report demonstrated that Physics-Informed Neural Networks can:
     
     \item Cuomo, S., et al. (2022). \textit{Scientific Machine Learning Through Physics-Informed Neural Networks: Where we are and What's Next.} Journal of Scientific Computing, 92(3), 88.
     
-    \item Vec2Vec (2024). \textit{Harnessing the Universal Geometry of Embeddings.} arXiv:2505.12540.
 \end{enumerate}
 
 %==============================================================================

@@ -4,67 +4,60 @@
 [![PyTorch](https://img.shields.io/badge/PyTorch-2.0+-red.svg)](https://pytorch.org/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-> **An initial exploration of Physics-Informed Neural Networks for solving partial differential equations, including linear (1D Heat Equation) and non-linear (Burgers Equation) systems.**
+> **An initial exploration of Physics-Informed Neural Networks for solving partial differential equations, including linear (Heat Equation), non-linear (Burgers Equation), and structural mechanics (Beam Deflection) systems.**
 
 ## 📖 Overview
 
 This repository contains my initial exploration of **Physics-Informed Neural Networks (PINNs)**, a novel paradigm in scientific machine learning that embeds physical laws directly into the loss function of neural networks. This work demonstrates how PINNs can solve differential equations without traditional mesh-based methods like FEA or FDM.
 
 ### Key Results
-- **Linear Heat Equation**: 99.8% accuracy (R² score)
-- **Non-Linear Burgers Equation**: Successfully captures shock formation
+- **Linear Heat Equation (2nd order PDE)**: 99.8% accuracy (R² score)
+- **Non-Linear Burgers Equation (2nd order PDE)**: Successfully captures shock formation
+- **Euler-Bernoulli Beam Deflection (4th order ODE)**: Near-perfect accuracy for structural mechanics
 
-## 🧮 Mathematical Background
+## 🧮 Case Studies
 
-### What are PINNs?
-
-PINNs approximate the solution to a PDE using a neural network and train by minimizing a composite loss:
-
-$$\mathcal{L}_{total} = \mathcal{L}_{physics} + \lambda_{BC} \mathcal{L}_{BC} + \lambda_{IC} \mathcal{L}_{IC}$$
-
-Where:
-- **Physics Loss**: Penalizes violations of the governing PDE
-- **BC Loss**: Enforces boundary conditions
-- **IC Loss**: Enforces initial conditions
-
-### Case Study 1: 1D Heat Equation (Linear)
+### Case Study 1: 1D Heat Equation (Linear, 2nd Order)
 
 $$\frac{\partial u}{\partial t} = \alpha \frac{\partial^2 u}{\partial x^2}$$
 
 - Domain: x ∈ [0, 1], t ∈ [0, 1]
 - Thermal diffusivity: α = 0.1
-- Initial condition: u(x, 0) = sin(πx)
-- Boundary conditions: u(0, t) = u(1, t) = 0
+- Demonstrates: Parabolic PDE, diffusion dynamics
 
-### Case Study 2: Burgers Equation (Non-Linear)
+### Case Study 2: Burgers Equation (Non-Linear, 2nd Order)
 
 $$\frac{\partial u}{\partial t} + u \frac{\partial u}{\partial x} = \nu \frac{\partial^2 u}{\partial x^2}$$
 
-- Domain: x ∈ [-1, 1], t ∈ [0, 1]
 - Viscosity: ν = 0.01/π
-- Initial condition: u(x, 0) = -sin(πx)
-- This equation exhibits **shock formation** due to the non-linear convection term.
+- Demonstrates: Non-linear convection, **shock formation**
+
+### Case Study 3: Euler-Bernoulli Beam (4th Order ODE)
+
+$$EI \frac{d^4 w}{dx^4} = q(x)$$
+
+- Simply-supported beam with uniform load
+- E = 200 GPa (Steel), q = 10 kN/m
+- Demonstrates: Higher-order derivatives, structural mechanics
 
 ## 📁 Repository Structure
 
 ```
 PINN_exploration/
 ├── README.md                    # This file
-├── pinn_mvp_demo.py             # Linear heat equation implementation
-├── pinn_burgers_demo.py         # Non-linear Burgers equation implementation
-├── PINN_Technical_Report.tex    # LaTeX source for technical report
-├── PINN_Technical_Report.pdf    # Compiled technical report (12 pages)
+├── pinn_mvp_demo.py             # Linear heat equation (2nd order)
+├── pinn_burgers_demo.py         # Non-linear Burgers equation
+├── pinn_beam_demo.py            # Structural beam deflection (4th order)
+├── PINN_Technical_Report.tex    # LaTeX source
+├── PINN_Technical_Report.pdf    # Technical report
 ├── results/
 │   ├── PINN_MVP_Results.png     # Heat equation visualization
-│   ├── PINN_MVP_Results.pdf     # Heat equation results (PDF)
 │   ├── PINN_Burgers_Results.png # Burgers equation visualization
-│   └── PINN_Burgers_Results.pdf # Burgers equation results (PDF)
+│   └── PINN_Beam_Results.png    # Beam deflection visualization
 └── requirements.txt             # Python dependencies
 ```
 
-## Quick Start
-
-### Installation
+## 🚀 Quick Start
 
 ```bash
 # Clone the repository
@@ -73,16 +66,11 @@ cd PINN_exploration_Heat1D_linear_and_non_linear_systems
 
 # Install dependencies
 pip install -r requirements.txt
-```
 
-### Run the Demos
-
-```bash
-# Linear Heat Equation (5000 epochs, ~3 minutes)
-python pinn_mvp_demo.py
-
-# Non-Linear Burgers Equation (10000 epochs, ~6 minutes)
-python pinn_burgers_demo.py
+# Run demos
+python pinn_mvp_demo.py       # Heat equation (~3 min)
+python pinn_burgers_demo.py   # Burgers equation (~6 min)
+python pinn_beam_demo.py      # Beam deflection (~6 min)
 ```
 
 ## 📊 Results
@@ -90,52 +78,44 @@ python pinn_burgers_demo.py
 ### Heat Equation (Linear)
 ![Heat Equation Results](results/PINN_MVP_Results.png)
 
-| Metric | Value |
-|--------|-------|
-| R² Score | 99.80% |
-| MSE | 6.0 × 10⁻⁵ |
-| Max Error | 0.019 |
-| Training Time | ~3 min |
-
 ### Burgers Equation (Non-Linear)
 ![Burgers Equation Results](results/PINN_Burgers_Results.png)
 
-The PINN successfully captures:
-- Initial sinusoidal profile
-- Wave steepening due to non-linear convection
-- Shock formation at x = 0
-- Diffusive smoothing
+### Beam Deflection (Structural Mechanics)
+![Beam Deflection Results](results/PINN_Beam_Results.png)
 
 ## 📚 Technical Report
 
-A comprehensive 12-page technical report is included with:
+A technical report is included with:
 - Mathematical derivations
 - Algorithm pseudocode
-- Detailed analysis of both case studies
-- Discussion of extensions (multi-physics, inverse problems, domain-agnostic PINNs)
-- References
+- Detailed analysis of case studies
+- Discussion of extensions and limitations
 
 📄 **[View Technical Report (PDF)](PINN_Technical_Report.pdf)**
 
-## Future Directions
+## 🔮 Future Directions
 
-- [ ] Implement Vec2Vec for domain-agnostic generalization
-- [ ] Extend to 2D/3D mechanical systems (stress analysis)
+- [ ] Extend to 2D/3D mechanical systems
 - [ ] Apply to inverse problems (parameter discovery)
 - [ ] Add Fourier features to overcome spectral bias
+- [ ] Explore multi-physics problems
 
 ## 📖 References
 
-1. Raissi, M., Perdikaris, P., & Karniadakis, G. E. (2019). *Physics-informed neural networks: A deep learning framework for solving forward and inverse problems involving nonlinear partial differential equations.* Journal of Computational Physics, 378, 686-707.
+1. Raissi, M., Perdikaris, P., & Karniadakis, G. E. (2019). *Physics-informed neural networks.* Journal of Computational Physics, 378, 686-707.
 
 2. Lu, L., et al. (2021). *DeepXDE: A deep learning library for solving differential equations.* SIAM Review, 63(1), 208-228.
 
-3. Wang, S., et al. (2021). *Understanding and mitigating gradient pathologies in physics-informed neural networks.* SIAM Journal on Scientific Computing, 43(5), A3055-A3081.
+## 👤 Author
+
+**Seymur Hasanov**  
+🔗 [LinkedIn](https://linkedin.com/in/seymurh) | [GitHub](https://github.com/Seymurhh)
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+MIT License - see [LICENSE](LICENSE) for details.
 
 ---
 
-*This is an initial exploration of PINNs as part of my capstone project research.*
+*Initial exploration of PINNs for capstone project research.*
